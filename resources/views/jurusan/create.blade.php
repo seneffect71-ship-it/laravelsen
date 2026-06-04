@@ -7,40 +7,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
   <body>
-    <form action="{{route('mahasiswa.save')}}"  method="post">
+    <form action="{{route('jurusan.save')}}"  method="post">
         @csrf
         <table class="table table-dark table-striped-columns">
             <tr>
-                <td>Nama lengkap</td>
+                <td>Nama Jurusan</td>
                 <td>:</td>
-                <td><input type="text" name="nama" class="form-control"></td>
+                <td><input type="text" name="Nama_Jurusan" value="{{ old('Nama_Jurusan') }}" class="form-control"></td>
             </tr>
             <tr>
-                <td>NIM</td>
+                <td>Kode Jurusan</td>
                 <td>:</td>
-                <td><input type="text" name="nim" class="form-control"></td>
+                <td><input type="text" name="Kode_Jurusan" value="{{ old('Kode_Jurusan') }}" class="form-control"></td>
             </tr>
-            <tr>
-                <td>NISN</td>
-                <td>:</td>
-                <td><input type="text" name="nisn" class="form-control"></td>
-            </tr>
-            <tr>
-                <td>Tempat Lahir</td>
-                <td>:</td>
-                <td><input type="text" name="tempat_lahir" class="form-control"></td>
-            </tr>
-            <tr>
-                <td>Tanggal Lahir</td>
-                <td>:</td>
-                <td><input type="date" name="tanggal_lahir" class="form-control"></td>
-            </tr>
-            <tr>
-                <td>Alamat</td>
-                <td>:</td>
-                <td><input type="text" name="alamat" class="form-control"></td>
-            </tr>
-            <tr>
                 <td colspan="3">
                     <input type="submit" value="Add" class="btn btn-primary">
                     <input type="reset" value="Clear" class="btn btn-secondary">

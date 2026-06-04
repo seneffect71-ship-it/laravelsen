@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('nim')->unique();
-            $table->string('nidn')->unique();
+            $table->string('nisn')->unique();
             $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
             $table->string('alamat');

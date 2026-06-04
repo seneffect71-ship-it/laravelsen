@@ -7,40 +7,50 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
   <body>
-    <form action="{{route('mahasiswa.update', $mahasiswa->id)}}"  method="post">
+    <form action="{{route('dosen.update', $dosen->id)}}"  method="post">
         @csrf
-        <input type="hidden" name="id" value="{{$mahasiswa->id}}">
+        <input type="hidden" name="id" value="{{$dosen->id}}">
         @method('PUT')
         <table class="table table-success table-striped-columns">
             <tr>
                 <td>Nama lengkap</td>
                 <td>:</td>
-                <td><input type="text" name="nama" value="{{ $mahasiswa->nama }}" class="form-control"></td>
+                <td><input type="text" name="Fullname" value="{{ $dosen->Fullname }}" class="form-control"></td>
             </tr>
             <tr>
-                <td>NIM</td>
+                <td>NIP</td>
                 <td>:</td>
-                <td><input type="text" name="nim" value="{{ $mahasiswa->nim }}" class="form-control"></td>
+                <td><input type="text" name="NIP" value="{{ $dosen->NIP }}" class="form-control"></td>
             </tr>
             <tr>
-                <td>NISN</td>
+                <td>NIDN</td>
                 <td>:</td>
-                <td><input type="text" name="nisn" value="{{ $mahasiswa->nisn }}" class="form-control"></td>
+                <td><input type="text" name="NIDN" value="{{ $dosen->NIDN }}" class="form-control"></td>
+            </tr>
+            <tr>
+                <td>Pendidikan Terakhir</td>
+                <td>:</td>
+                <td><input type="text" name="Pendidikan_Terakhir" value="{{ $dosen->Pendidikan_Terakhir }}" class="form-control"></td>
+            </tr>
+            <tr>
+                <td>Jurusan Utama</td>
+                <td>:</td>
+                <td><input type="text" name="Jurusan_id" value="{{ $dosen->Jurusan_id }}" class="form-control"></td>
             </tr>
             <tr>
                 <td>Tempat Lahir</td>
                 <td>:</td>
-                <td><input type="text" name="tempat_lahir" value="{{ $mahasiswa->tempat_lahir }}" class="form-control"></td>
+                <td><input type="text" name="Tempat_Lahir" value="{{ $dosen->Tempat_Lahir }}" class="form-control"></td>
             </tr>
             <tr>
                 <td>Tanggal Lahir</td>
                 <td>:</td>
-                <td><input type="date" name="tanggal_lahir" value="{{ $mahasiswa->tanggal_lahir }}" class="form-control"></td>
+                <td><input type="date" name="Tanggal_Lahir" value="{{ $dosen->Tanggal_Lahir }}" class="form-control"></td>
             </tr>
             <tr>
                 <td>Alamat</td>
                 <td>:</td>
-                <td><input type="text" name="alamat" value="{{ $mahasiswa->alamat }}" class="form-control"></td>
+                <td><input type="text" name="Alamat" value="{{ $dosen->Alamat }}" class="form-control"></td>
             </tr>
             <tr>
                 <td colspan="3">

@@ -7,38 +7,42 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
   <body>
-    <form action="{{route('mahasiswa.save')}}"  method="post">
+    <form action="{{route('matakuliah.save')}}"  method="post">
         @csrf
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <table class="table table-dark table-striped-columns">
             <tr>
-                <td>Nama lengkap</td>
+                <td>Kode Mata Kuliah</td>
                 <td>:</td>
-                <td><input type="text" name="nama" class="form-control"></td>
+                <td><input type="text" name="Kode_Mata_Kuliah" value="{{ old('Kode_Mata_Kuliah') }}" class="form-control"></td>
             </tr>
             <tr>
-                <td>NIM</td>
+                <td>Nama Mata Kuliah</td>
                 <td>:</td>
-                <td><input type="text" name="nim" class="form-control"></td>
+                <td><input type="text" name="Nama_Mata_Kuliah" value="{{ old('Nama_Mata_Kuliah') }}" class="form-control"></td>
             </tr>
             <tr>
-                <td>NISN</td>
+                <td>SKS</td>
                 <td>:</td>
-                <td><input type="text" name="nisn" class="form-control"></td>
+                <td><input type="text" name="SKS" value="{{ old('SKS') }}" class="form-control"></td>
             </tr>
             <tr>
-                <td>Tempat Lahir</td>
+                <td>Dosen Pengampu</td>
                 <td>:</td>
-                <td><input type="text" name="tempat_lahir" class="form-control"></td>
+                <td><input type="text" name="Dosen_Id" value="{{ old('Dosen_Id') }}" class="form-control"></td>
             </tr>
             <tr>
-                <td>Tanggal Lahir</td>
+                <td>Jurusan</td>
                 <td>:</td>
-                <td><input type="date" name="tanggal_lahir" class="form-control"></td>
-            </tr>
-            <tr>
-                <td>Alamat</td>
-                <td>:</td>
-                <td><input type="text" name="alamat" class="form-control"></td>
+                <td><input type="text" name="Jurusan_Id" value="{{ old('Jurusan_Id') }}" class="form-control"></td>
             </tr>
             <tr>
                 <td colspan="3">

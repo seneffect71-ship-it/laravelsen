@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('table_dosen', function (Blueprint $table) {
             $table->id();
+            $table->string('Fullname');
+            $table->string('NIP')->unique();
+            $table->string('NIDN')->unique();
+            $table->string('Pendidikan_Terakhir');
+            $table->string('Jurusan_id');
+            $table->string('Tempat_Lahir');
+            $table->date('Tanggal_Lahir');
+            $table->text('Alamat');
             $table->timestamps();
         });
     }

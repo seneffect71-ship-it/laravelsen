@@ -6,20 +6,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        if (! Schema::hasColumn('mahasiswa', 'nim')) {
+        if (! Schema::hasColumn('mahasiswa', 'nisn')) {
             Schema::table('mahasiswa', function (Blueprint $table) {
-                $table->string('nim')->nullable()->after('nama');
+                $table->string('nisn')->nullable()->unique()->after('nim');
             });
         }
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        if (Schema::hasColumn('mahasiswa', 'nim')) {
+        if (Schema::hasColumn('mahasiswa', 'nisn')) {
             Schema::table('mahasiswa', function (Blueprint $table) {
-                $table->dropColumn('nim');
+                $table->dropColumn('nisn');
             });
         }
     }
