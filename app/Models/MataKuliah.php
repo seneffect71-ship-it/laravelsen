@@ -19,4 +19,14 @@ class MataKuliah extends Model
     public function kelas() {
         return $this->hasMany(Kelas::class, 'id', 'kode_mata_kuliah');
     }
+
+    public function dosen()
+    {
+        return $this->belongsTo(Dosen::class, 'Dosen_Id');
+    }
+
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class, 'Jurusan_Id');
+    }
 }

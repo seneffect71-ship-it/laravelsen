@@ -13,7 +13,7 @@ class MahasiswaController extends Controller
     public function index()
     {
         return view('mahasiswa.index', [
-            'mahasiswa' => Mahasiswa::all()
+            'mahasiswa' => Mahasiswa::latest()->get()
         ]);
     }
 
@@ -34,7 +34,7 @@ class MahasiswaController extends Controller
 
         Mahasiswa::create($data);
 
-        return redirect()->action([MahasiswaController::class, 'index']);
+        return redirect()->action([MahasiswaController::class, 'index'])->with('success', 'Data mahasiswa berhasil ditambahkan.');
     }
 
     /**
@@ -64,7 +64,7 @@ class MahasiswaController extends Controller
 
         Mahasiswa::find($id)->update($data);
 
-        return redirect()->action([MahasiswaController::class, 'index']);
+        return redirect()->action([MahasiswaController::class, 'index'])->with('success', 'Data mahasiswa berhasil diperbarui.');
     }
 
     /**
@@ -74,6 +74,6 @@ class MahasiswaController extends Controller
     {
         Mahasiswa::find($id)->delete();
 
-        return redirect()->action([MahasiswaController::class, 'index']);
+        return redirect()->action([MahasiswaController::class, 'index'])->with('success', 'Data mahasiswa berhasil dihapus.');
     }    
 }

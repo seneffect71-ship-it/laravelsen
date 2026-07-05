@@ -13,7 +13,10 @@
           <h2>Buat KRS</h2>
           <p class="text-muted mb-0">Isi data KRS mahasiswa</p>
         </div>
-        <a href="{{ route('krs.index') }}" class="btn btn-secondary">Kembali</a>
+        <div class="d-flex gap-2">
+          <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Dashboard</a>
+          <a href="{{ route('krs.index') }}" class="btn btn-secondary">Data KRS</a>
+        </div>
       </div>
 
       @if ($errors->any())
@@ -77,6 +80,7 @@
 
         <div class="col-12">
           <button type="submit" class="btn btn-success" {{ $mahasiswa->isEmpty() ? 'disabled' : '' }}>Simpan</button>
+          <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary ms-2">Kembali ke Dashboard</a>
         </div>
       </form>
     </div>

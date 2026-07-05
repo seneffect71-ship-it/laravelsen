@@ -7,7 +7,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
   <body>
-    <form action="{{route('dosen.update', $dosen->id)}}"  method="post">
+    <div class="container mt-3 d-flex justify-content-between align-items-center">
+        <h2 class="h4 mb-0">Edit Dosen</h2>
+        <div class="d-flex gap-2">
+            <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Dashboard</a>
+            <a href="{{ url('/dosen') }}" class="btn btn-outline-primary">Data Dosen</a>
+        </div>
+    </div>
+    <form action="{{route('dosen.update', $dosen->id)}}"  method="post" class="container mt-3">
         @csrf
         <input type="hidden" name="id" value="{{$dosen->id}}">
         @method('PUT')

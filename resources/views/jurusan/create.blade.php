@@ -7,7 +7,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
   <body>
-    <form action="{{route('jurusan.save')}}"  method="post">
+    <div class="container mt-3 d-flex justify-content-between align-items-center">
+        <h2 class="h4 mb-0">Tambah Jurusan</h2>
+        <div class="d-flex gap-2">
+            <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Dashboard</a>
+            <a href="{{ url('/jurusan') }}" class="btn btn-outline-primary">Data Jurusan</a>
+        </div>
+    </div>
+    <form action="{{route('jurusan.save')}}"  method="post" class="container mt-3">
         @csrf
         <table class="table table-dark table-striped-columns">
             <tr>
@@ -20,6 +27,7 @@
                 <td>:</td>
                 <td><input type="text" name="Kode_Jurusan" value="{{ old('Kode_Jurusan') }}" class="form-control"></td>
             </tr>
+            <tr>
                 <td colspan="3">
                     <input type="submit" value="Add" class="btn btn-primary">
                     <input type="reset" value="Clear" class="btn btn-secondary">

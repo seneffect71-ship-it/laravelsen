@@ -13,7 +13,7 @@ class DosenController extends Controller
     public function index()
     {
         return view('dosen.index', [
-            'dosen' => Dosen::all()
+            'dosen' => Dosen::latest()->get()
         ]);
     }
 
@@ -34,7 +34,7 @@ class DosenController extends Controller
 
         Dosen::create($data);
 
-        return redirect()->action([DosenController::class, 'index']);
+        return redirect()->action([DosenController::class, 'index'])->with('success', 'Data dosen berhasil ditambahkan.');
     }
 
     /**
@@ -64,7 +64,7 @@ class DosenController extends Controller
 
         Dosen::find($id)->update($data);
 
-        return redirect()->action([DosenController  ::class, 'index']);
+        return redirect()->action([DosenController::class, 'index'])->with('success', 'Data dosen berhasil diperbarui.');
     }
 
     /**
@@ -74,6 +74,6 @@ class DosenController extends Controller
     {
         Dosen::find($id)->delete();
 
-        return redirect()->action([DosenController::class, 'index']);
+        return redirect()->action([DosenController::class, 'index'])->with('success', 'Data dosen berhasil dihapus.');
     }    
 }

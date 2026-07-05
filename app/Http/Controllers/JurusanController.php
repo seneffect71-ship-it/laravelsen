@@ -13,7 +13,7 @@ class JurusanController extends Controller
     public function index()
     {
         return view('jurusan.index', [
-            'jurusan' => Jurusan::all()
+            'jurusan' => Jurusan::latest()->get()
         ]);
     }
 
@@ -37,7 +37,7 @@ class JurusanController extends Controller
 
         Jurusan::create($data);
 
-        return redirect()->action([JurusanController::class, 'index']);
+        return redirect()->action([JurusanController::class, 'index'])->with('success', 'Data jurusan berhasil ditambahkan.');
     }
 
     /**
@@ -70,7 +70,7 @@ class JurusanController extends Controller
 
         Jurusan::find($id)->update($data);
 
-        return redirect()->action([JurusanController::class, 'index']);
+        return redirect()->action([JurusanController::class, 'index'])->with('success', 'Data jurusan berhasil diperbarui.');
     }
 
     /**
@@ -80,6 +80,6 @@ class JurusanController extends Controller
     {
         Jurusan::find($id)->delete();
 
-        return redirect()->action([JurusanController::class, 'index']);
+        return redirect()->action([JurusanController::class, 'index'])->with('success', 'Data jurusan berhasil dihapus.');
     }    
 }

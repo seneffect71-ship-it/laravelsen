@@ -11,7 +11,7 @@ class KrsController extends Controller
     public function index()
     {
         return view('krs.index', [
-            'krs' => Krs::with('mahasiswa')->get()
+            'krs' => Krs::with('mahasiswa')->latest()->get()
         ]);
     }
 
@@ -34,13 +34,18 @@ class KrsController extends Controller
 
         Krs::create($data);
 
-        return redirect('/krs');
+        return redirect('/krs')->with('success', 'KRS berhasil dibuat.');
     }
 
     public function destroy($id)
     {
-        Krs::find($id)->delete();
+        $krs = Krs::find($id);
 
-        return redirect('/krs');
+        if ($krs) {
+            $krs->delete();
+            return redirect('/krs')->with('success', 'KRS berhasil dihapus.');
+        }
+
+        return redirect('/krs')->with('success', 'KRS tidak ditemukan atau sudah dihapus.');
     }
 }

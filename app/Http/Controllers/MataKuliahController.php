@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dosen;
+use App\Models\Jurusan;
 use App\Models\MataKuliah;
 use Illuminate\Http\Request;
 
@@ -13,7 +15,7 @@ class MataKuliahController extends Controller
     public function index()
     {
         return view('matakuliah.index', [
-            'matakuliah' => MataKuliah::all()
+            'matakuliah' => MataKuliah::with(['dosen', 'jurusan'])->latest()->get()
         ]);
     }
 
@@ -22,7 +24,10 @@ class MataKuliahController extends Controller
      */
     public function create()
     {
-        return view('matakuliah.create', []);
+        return view('matakuliah.create', [
+            'dosens' => Dosen::orderBy('Fullname')->get(),
+            'jurusans' => Jurusan::orderBy('Nama_Jurusan')->get(),
+        ]);
     }
 
     /**
@@ -34,13 +39,13 @@ class MataKuliahController extends Controller
             'Kode_Mata_Kuliah' => 'required|unique:table_mata_kuliah,Kode_Mata_Kuliah',
             'Nama_Mata_Kuliah' => 'required',
             'SKS' => 'required|integer',
-            'Dosen_Id' => 'required|integer',
-            'Jurusan_Id' => 'required|integer',
+            'Dosen_Id' => 'required|exists:table_dosen,id',
+            'Jurusan_Id' => 'required|exists:table_jurusan,id',
         ]);
 
         MataKuliah::create($data);
 
-        return redirect()->action([MataKuliahController::class, 'index']);
+        return redirect()->action([MataKuliahController::class, 'index'])->with('success', 'Data mata kuliah berhasil ditambahkan.');
     }
 
     /**
@@ -57,7 +62,9 @@ class MataKuliahController extends Controller
     public function edit($id)
     {
         return view('matakuliah.edit', [
-            'matakuliah' => MataKuliah::find($id)
+            'matakuliah' => MataKuliah::findOrFail($id),
+            'dosens' => Dosen::orderBy('Fullname')->get(),
+            'jurusans' => Jurusan::orderBy('Nama_Jurusan')->get(),
         ]);
     }
 
@@ -70,13 +77,13 @@ class MataKuliahController extends Controller
             'Kode_Mata_Kuliah' => 'required|unique:table_mata_kuliah,Kode_Mata_Kuliah,'.$id,
             'Nama_Mata_Kuliah' => 'required',
             'SKS' => 'required|integer',
-            'Dosen_Id' => 'required|integer',
-            'Jurusan_Id' => 'required|integer',
+            'Dosen_Id' => 'required|exists:table_dosen,id',
+            'Jurusan_Id' => 'required|exists:table_jurusan,id',
         ]);
 
-        MataKuliah::find($id)->update($data);
+        MataKuliah::findOrFail($id)->update($data);
 
-        return redirect()->action([MataKuliahController::class, 'index']);
+        return redirect()->action([MataKuliahController::class, 'index'])->with('success', 'Data mata kuliah berhasil diperbarui.');
     }
 
     /**
@@ -86,6 +93,6 @@ class MataKuliahController extends Controller
     {
         MataKuliah::find($id)->delete();
 
-        return redirect()->action([MataKuliahController::class, 'index']);
+        return redirect()->action([MataKuliahController::class, 'index'])->with('success', 'Data mata kuliah berhasil dihapus.');
     }    
 }

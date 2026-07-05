@@ -1,0 +1,56 @@
+<svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+  <!-- Salib merah di atas -->
+  <g id="cross">
+    <rect x="95" y="5" width="10" height="35" fill="#8B0000" />
+    <rect x="80" y="15" width="40" height="10" fill="#8B0000" />
+  </g>
+
+  <!-- Bangunan dengan puncak lancip (Gereja) -->
+  <g id="building">
+    <!-- Puncak lancip -->
+    <polygon points="100,40 70,80 130,80" fill="none" stroke="#1a1a1a" stroke-width="2" />
+    <!-- Garis dalam puncak -->
+    <line x1="100" y1="40" x2="100" y2="80" stroke="#1a1a1a" stroke-width="2" />
+    <line x1="85" y1="60" x2="115" y2="60" stroke="#1a1a1a" stroke-width="2" />
+    
+    <!-- Sisi bangunan -->
+    <line x1="70" y1="80" x2="60" y2="140" stroke="#1a1a1a" stroke-width="2" />
+    <line x1="130" y1="80" x2="140" y2="140" stroke="#1a1a1a" stroke-width="2" />
+    
+    <!-- Sayap kiri -->
+    <path d="M 60 100 L 45 110 L 50 130 L 65 120 Z" fill="none" stroke="#1a1a1a" stroke-width="2" />
+    <!-- Sayap kanan -->
+    <path d="M 140 100 L 155 110 L 150 130 L 135 120 Z" fill="none" stroke="#1a1a1a" stroke-width="2" />
+    
+    <!-- Badan bangunan -->
+    <rect x="60" y="140" width="80" height="60" fill="none" stroke="#1a1a1a" stroke-width="2" />
+  </g>
+
+  <!-- Lingkaran tengah dengan desain -->
+  <g id="circle-center">
+    <circle cx="100" cy="155" r="38" fill="none" stroke="#1a1a1a" stroke-width="2.5" />
+    <circle cx="100" cy="155" r="32" fill="none" stroke="#1a1a1a" stroke-width="1.5" />
+    <!-- Garis vertikal dalam lingkaran -->
+    <line x1="100" y1="125" x2="100" y2="185" stroke="#1a1a1a" stroke-width="1.5" />
+    <!-- Garis horizontal dalam lingkaran -->
+    <line x1="68" y1="155" x2="132" y2="155" stroke="#1a1a1a" stroke-width="1.5" />
+    <!-- Segmen dalam lingkaran -->
+    <path d="M 100 125 L 85 155 M 100 125 L 115 155 M 100 185 L 85 155 M 100 185 L 115 155" stroke="#1a1a1a" stroke-width="1.5" />
+  </g>
+
+  <!-- Buku terbuka di bawah -->
+  <g id="book">
+    <!-- Halaman kiri -->
+    <path d="M 75 185 L 80 210 L 100 215 Z" fill="none" stroke="#1a1a1a" stroke-width="2" />
+    <!-- Halaman kanan -->
+    <path d="M 125 185 L 120 210 L 100 215 Z" fill="none" stroke="#1a1a1a" stroke-width="2" />
+    <!-- Garis buku -->
+    <line x1="100" y1="185" x2="100" y2="215" stroke="#1a1a1a" stroke-width="2" />
+    <!-- Garis halaman -->
+    <line x1="77" y1="195" x2="88" y2="210" stroke="#1a1a1a" stroke-width="1" />
+    <line x1="123" y1="195" x2="112" y2="210" stroke="#1a1a1a" stroke-width="1" />
+  </g>
+
+  <!-- Garis pembatas untuk text -->
+  <line x1="50" y1="235" x2="150" y2="235" stroke="#1a1a1a" stroke-width="2" />
+</svg>

@@ -20,4 +20,14 @@ class Kelas extends Model
         'jumlah_mahasiswa',
         'semester'
     ];
+
+    public function dosen()
+    {
+        return $this->belongsTo(Dosen::class, 'kode_dosen');
+    }
+
+    public function mataKuliah()
+    {
+        return $this->belongsTo(MataKuliah::class, 'kode_mata_kuliah');
+    }
 }
