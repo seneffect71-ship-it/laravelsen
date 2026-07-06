@@ -53,13 +53,52 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="mainNav">
+          @php $role = session('user.role') ?? null; @endphp
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item"><a class="nav-link active" href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ action([App\Http\Controllers\KelasController::class, 'index']) }}">Kelas</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ action([App\Http\Controllers\KrsController::class, 'index']) }}">KRS</a></li>
+            @if($role === 'admin')
+              <li class="nav-item"><a class="nav-link" href="{{ route('kelas.index') }}">Kelas</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ route('matakuliah.index') }}">Mata Kuliah</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ route('dosen.index') }}">Dosen</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ route('mahasiswa.index') }}">Mahasiswa</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ route('jurusan.index') }}">Jurusan</a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ route('krs.index') }}">KRS</a></li>
+            @elseif($role === 'mahasiswa')
+              <li class="nav-item"><a class="nav-link" href="{{ route('krs.index') }}">Daftar KRS</a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Lihat Data
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ route('kelas.index') }}">Kelas</a></li>
+                  <li><a class="dropdown-item" href="{{ route('matakuliah.index') }}">Mata Kuliah</a></li>
+                  <li><a class="dropdown-item" href="{{ route('dosen.index') }}">Dosen</a></li>
+                  <li><a class="dropdown-item" href="{{ route('mahasiswa.index') }}">Mahasiswa</a></li>
+                  <li><a class="dropdown-item" href="{{ route('jurusan.index') }}">Jurusan</a></li>
+                </ul>
+              </li>
+            @elseif($role === 'dosen')
+              <li class="nav-item"><a class="nav-link" href="{{ route('krs.index.dosen') }}">Persetujuan KRS</a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Lihat Data
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{{ route('kelas.index') }}">Kelas</a></li>
+                  <li><a class="dropdown-item" href="{{ route('matakuliah.index') }}">Mata Kuliah</a></li>
+                  <li><a class="dropdown-item" href="{{ route('dosen.index') }}">Dosen</a></li>
+                  <li><a class="dropdown-item" href="{{ route('mahasiswa.index') }}">Mahasiswa</a></li>
+                  <li><a class="dropdown-item" href="{{ route('jurusan.index') }}">Jurusan</a></li>
+                  <li><a class="dropdown-item" href="{{ route('krs.index') }}">KRS</a></li>
+                </ul>
+              </li>
+            @endif
           </ul>
           <div class="d-flex align-items-center gap-3">
             <span class="text-muted small">{{ session('user.name') }}</span>
+            @if($role)
+              <span class="badge bg-secondary text-capitalize">{{ $role }}</span>
+            @endif
             <a class="btn btn-outline-danger btn-sm" href="/logout">Logout</a>
           </div>
         </div>
@@ -75,8 +114,12 @@
             <p class="text-muted mb-0">Pantau data utama dan masuk ke modul yang ingin dikelola.</p>
           </div>
           <div class="d-flex flex-wrap gap-2 align-items-start">
-            <a href="{{ route('kelas.create') }}" class="btn btn-primary quick-action">Tambah Kelas</a>
-            <a href="{{ route('krs.create') }}" class="btn btn-outline-primary quick-action">Buat KRS</a>
+            @if($role === 'admin')
+              <a href="{{ route('kelas.create') }}" class="btn btn-primary quick-action">Tambah Kelas</a>
+            @endif
+            @if($role === 'mahasiswa')
+              <a href="{{ route('krs.create') }}" class="btn btn-outline-primary quick-action">Buat KRS</a>
+            @endif
           </div>
         </div>
       </section>
@@ -93,7 +136,11 @@
       @endphp
 
       <section class="row g-3">
+        @php $role = session('user.role') ?? null; @endphp
         @foreach($modules as $module)
+          @if($role === 'mahasiswa' && $module['title'] !== 'KRS')
+            @continue
+          @endif
           <div class="col-12 col-md-6 col-xl-4">
             <div class="module-card">
               <div class="d-flex justify-content-between align-items-start gap-3">
