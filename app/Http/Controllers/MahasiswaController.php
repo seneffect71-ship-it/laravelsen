@@ -8,12 +8,24 @@ use Illuminate\Http\Request;
 class MahasiswaController extends Controller
 {
     /**
+     * Check if user has admin role, redirect if not.
+     */
+    private function requireAdmin()
+    {
+        $user = session('user');
+        if (!$user || $user['role'] !== 'admin') {
+            return redirect('/dashboard')->with('message', 'Akses tidak diizinkan.');
+        }
+        return null;
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()
     {
         return view('mahasiswa.index', [
-            'mahasiswa' => Mahasiswa::latest()->get()
+            'mahasiswa' => Mahasiswa::latest()->paginate(12)
         ]);
     }
 
@@ -22,6 +34,9 @@ class MahasiswaController extends Controller
      */
     public function create()
     {
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
         return view('mahasiswa.create', []);
     }
 
@@ -30,6 +45,9 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
         $data = $request->except('_token');
 
         Mahasiswa::create($data);
@@ -42,7 +60,11 @@ class MahasiswaController extends Controller
      */
     public function show($id)
     {
-        return Mahasiswa::find($id);
+        $mahasiswa = Mahasiswa::find($id);
+        if (!$mahasiswa) {
+            return redirect()->route('mahasiswa.index')->with('message', 'Mahasiswa tidak ditemukan.');
+        }
+        return view('mahasiswa.show', compact('mahasiswa'));
     }
 
     /**
@@ -50,6 +72,9 @@ class MahasiswaController extends Controller
      */
     public function edit($id)
     {
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
         return view('mahasiswa.edit', [
             'mahasiswa' => Mahasiswa::find($id)
         ]);
@@ -60,6 +85,9 @@ class MahasiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
         $data = $request->except('_token', 'id', '_method');
 
         Mahasiswa::find($id)->update($data);
@@ -72,6 +100,9 @@ class MahasiswaController extends Controller
      */
     public function destroy($id)
     {
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
         Mahasiswa::find($id)->delete();
 
         return redirect()->action([MahasiswaController::class, 'index'])->with('success', 'Data mahasiswa berhasil dihapus.');

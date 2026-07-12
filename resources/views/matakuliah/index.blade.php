@@ -21,10 +21,12 @@
                 <h1 class="h3 mb-1">Data Mata Kuliah</h1>
                 <p class="text-muted mb-0">Kelola kode, SKS, jurusan, dan dosen pengampu mata kuliah.</p>
             </div>
-            <div class="d-flex flex-wrap gap-2 align-items-start">
-                <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Dashboard</a>
-                <a href="{{ route('matakuliah.add') }}" class="btn btn-primary">Tambah Mata Kuliah</a>
-            </div>
+                        <div class="d-flex flex-wrap gap-2 align-items-start">
+                                <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Dashboard</a>
+                                @if(session('user.role') === 'admin')
+                                    <a href="{{ route('matakuliah.add') }}" class="btn btn-primary">Tambah Mata Kuliah</a>
+                                @endif
+                        </div>
         </div>
 
         @if(session('success'))
@@ -54,6 +56,7 @@
                         <td>{{ $m->jurusan?->Nama_Jurusan ?? 'Jurusan tidak ditemukan' }}</td>
                         <td>{{ $m->dosen?->Fullname ?? 'Dosen tidak ditemukan' }}</td>
                         <td class="text-end">
+                            @if(session('user.role') === 'admin')
                             <div class="d-inline-flex gap-2">
                                 <a href="{{ route('matakuliah.edit', $m->id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
                                 <form action="{{ route('matakuliah.delete', $m->id) }}" method="post" onsubmit="return confirm('Hapus mata kuliah ini?')">
@@ -62,6 +65,7 @@
                                     <button type="submit" class="btn btn-sm btn-outline-danger">Hapus</button>
                                 </form>
                             </div>
+                            @endif
                         </td>
                     </tr>
                 @empty
@@ -77,6 +81,7 @@
             </table>
         </div>
     </div>
+    <div class="mt-3">@if(isset($matakuliah) && method_exists($matakuliah, 'links')) {{ $matakuliah->links() }} @endif</div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>

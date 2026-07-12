@@ -43,7 +43,7 @@
   <body>
     <nav class="navbar navbar-expand-lg bg-white">
       <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('dashboard') }}">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="https://itbss.ac.id/" target="_blank" rel="noopener noreferrer">
           <div class="brand-mark">
             <img src="{{ asset('images/logo-itbss.png') }}" alt="ITBSS Logo" />
           </div>
@@ -113,30 +113,22 @@
             <h1 class="h3 mb-2">Sistem Informasi Akademik</h1>
             <p class="text-muted mb-0">Pantau data utama dan masuk ke modul yang ingin dikelola.</p>
           </div>
-          <div class="d-flex flex-wrap gap-2 align-items-start">
-            @if($role === 'admin')
-              <a href="{{ route('kelas.create') }}" class="btn btn-primary quick-action">Tambah Kelas</a>
-            @endif
-            @if($role === 'mahasiswa')
-              <a href="{{ route('krs.create') }}" class="btn btn-outline-primary quick-action">Buat KRS</a>
-            @endif
           </div>
         </div>
       </section>
 
       @php
         $modules = [
-          ['title' => 'Dosen', 'count' => $stats['dosen'] ?? 0, 'text' => 'Kelola data pengajar.', 'url' => action([App\Http\Controllers\DosenController::class, 'index'])],
-          ['title' => 'Mahasiswa', 'count' => $stats['mahasiswa'] ?? 0, 'text' => 'Kelola identitas mahasiswa.', 'url' => action([App\Http\Controllers\MahasiswaController::class, 'index'])],
-          ['title' => 'Mata Kuliah', 'count' => $stats['matakuliah'] ?? 0, 'text' => 'Kelola kurikulum dan SKS.', 'url' => action([App\Http\Controllers\MataKuliahController::class, 'index'])],
-          ['title' => 'Jurusan', 'count' => $stats['jurusan'] ?? 0, 'text' => 'Kelola program studi.', 'url' => action([App\Http\Controllers\JurusanController::class, 'index'])],
-          ['title' => 'KRS', 'count' => $stats['krs'] ?? 0, 'text' => 'Kelola rencana studi.', 'url' => action([App\Http\Controllers\KrsController::class, 'index'])],
-          ['title' => 'Kelas', 'count' => $stats['kelas'] ?? 0, 'text' => 'Kelola jadwal kelas.', 'url' => action([App\Http\Controllers\KelasController::class, 'index'])],
+          ['title' => 'Dosen', 'count' => $stats['dosen'] ?? 0, 'text' => 'Lihat data pengajar.', 'url' => route('dosen.index')],
+          ['title' => 'Mahasiswa', 'count' => $stats['mahasiswa'] ?? 0, 'text' => 'Lihat identitas mahasiswa.', 'url' => route('mahasiswa.index')],
+          ['title' => 'Mata Kuliah', 'count' => $stats['matakuliah'] ?? 0, 'text' => 'Lihat kurikulum dan SKS.', 'url' => route('matakuliah.index')],
+          ['title' => 'Jurusan', 'count' => $stats['jurusan'] ?? 0, 'text' => 'Lihat program studi.', 'url' => route('jurusan.index')],
+          ['title' => 'KRS', 'count' => $stats['krs'] ?? 0, 'text' => 'Persetujuan KRS mahasiswa.', 'url' => $role === 'dosen' ? route('krs.index.dosen') : route('krs.index')],
+          ['title' => 'Kelas', 'count' => $stats['kelas'] ?? 0, 'text' => 'Lihat jadwal kelas.', 'url' => route('kelas.index')],
         ];
       @endphp
 
       <section class="row g-3">
-        @php $role = session('user.role') ?? null; @endphp
         @foreach($modules as $module)
           @if($role === 'mahasiswa' && $module['title'] !== 'KRS')
             @continue
@@ -162,7 +154,7 @@
             <p class="text-primary fw-semibold mb-1">KRS Terbaru</p>
             <h2 class="h5 mb-0">Ringkasan KRS terbaru</h2>
           </div>
-          <a href="{{ action([App\Http\Controllers\KrsController::class, 'index']) }}" class="btn btn-sm btn-outline-primary">Lihat Semua KRS</a>
+          <a href="{{ $role === 'dosen' ? route('krs.index.dosen') : route('krs.index') }}" class="btn btn-sm btn-outline-primary">Lihat Semua KRS</a>
         </div>
 
         @if($recentKrs->isEmpty())

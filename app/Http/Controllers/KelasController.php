@@ -9,15 +9,27 @@ use Illuminate\Http\Request;
 
 class KelasController extends Controller
 {
+    private function requireAdmin()
+    {
+        $user = session('user');
+        if (!$user || $user['role'] !== 'admin') {
+            return redirect('/dashboard')->with('message', 'Akses tidak diizinkan.');
+        }
+        return null;
+    }
+
     public function index()
     {
         return view('kelas.index', [
-            'kelas' => Kelas::with(['dosen', 'mataKuliah'])->latest()->get()
+            'kelas' => Kelas::with(['dosen', 'mataKuliah'])->latest()->paginate(12)
         ]);
     }
 
     public function create()
     {
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
         return view('kelas.create', [
             'dosens' => Dosen::all(),
             'matkuls' => MataKuliah::all()
@@ -26,6 +38,9 @@ class KelasController extends Controller
 
     public function store(Request $request)
     {
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
         $data = $request->validate([
             'kode_kelas' => 'required|string|max:255',
             'kode_mata_kuliah' => 'required|exists:table_mata_kuliah,id',
@@ -43,9 +58,47 @@ class KelasController extends Controller
         return redirect('/kelas')->with('success', 'Kelas berhasil ditambahkan.');
     }
 
+    public function edit($id)
+    {
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
+        $kelas = Kelas::with(['dosen', 'mataKuliah'])->findOrFail($id);
+        return view('kelas.edit', [
+            'kelas' => $kelas,
+            'dosens' => Dosen::all(),
+            'matkuls' => MataKuliah::all()
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
+        $data = $request->validate([
+            'kode_kelas' => 'required|string|max:255',
+            'kode_mata_kuliah' => 'required|exists:table_mata_kuliah,id',
+            'kode_dosen' => 'required|exists:table_dosen,id',
+            'hari' => 'required|in:senin,selasa,rabu,kamis,jumat',
+            'jam' => 'required|in:08:00 - 09:40,09:50 - 11:30,12:30 - 14:10,17:00 - 18:40,19:00 - 20:40',
+            'tahun_ajaran' => 'required|string|max:255',
+            'ruang_kelas' => 'required|string|max:255',
+            'jumlah_max' => 'required|integer|min:1',
+            'semester' => 'required|in:ganjil,genap',
+        ]);
+
+        Kelas::findOrFail($id)->update($data);
+
+        return redirect('/kelas')->with('success', 'Kelas berhasil diperbarui.');
+    }
+
     public function destroy($id)
     {
-        Kelas::find($id)->delete();
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
+        Kelas::findOrFail($id)->delete();
 
         return redirect('/kelas');
     }

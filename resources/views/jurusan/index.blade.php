@@ -20,10 +20,12 @@
                 <h1 class="h3 mb-1">Data Jurusan</h1>
                 <p class="text-muted mb-0">Kelola kode dan nama jurusan yang dipakai di data akademik.</p>
             </div>
-            <div class="d-flex flex-wrap gap-2 align-items-start">
-                <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Dashboard</a>
-                <a href="{{ route('jurusan.add') }}" class="btn btn-primary">Tambah Jurusan</a>
-            </div>
+                        <div class="d-flex flex-wrap gap-2 align-items-start">
+                                <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Dashboard</a>
+                                @if(session('user.role') === 'admin')
+                                    <a href="{{ route('jurusan.add') }}" class="btn btn-primary">Tambah Jurusan</a>
+                                @endif
+                        </div>
         </div>
 
         @if(session('success'))
@@ -47,6 +49,7 @@
                         <td class="fw-semibold">{{ $j->Kode_Jurusan }}</td>
                         <td>{{ $j->Nama_Jurusan }}</td>
                         <td class="text-end">
+                            @if(session('user.role') === 'admin')
                             <div class="d-inline-flex gap-2">
                                 <a href="{{ route('jurusan.edit', $j->id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
                                 <form action="{{ route('jurusan.delete', $j->id) }}" method="post" onsubmit="return confirm('Hapus jurusan ini?')">
@@ -55,6 +58,7 @@
                                     <button type="submit" class="btn btn-sm btn-outline-danger">Hapus</button>
                                 </form>
                             </div>
+                            @endif
                         </td>
                     </tr>
                 @empty
@@ -70,6 +74,7 @@
             </table>
         </div>
     </div>
+    <div class="mt-3">@if(isset($jurusan) && method_exists($jurusan, 'links')) {{ $jurusan->links() }} @endif</div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>

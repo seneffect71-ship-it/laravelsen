@@ -23,11 +23,11 @@ class Kelas extends Model
 
     public function dosen()
     {
-        return $this->belongsTo(Dosen::class, 'kode_dosen');
+        return $this->belongsTo(Dosen::class, 'kode_dosen', 'id');
     }
 
     public function mataKuliah()
     {
-        return $this->belongsTo(MataKuliah::class, 'kode_mata_kuliah');
+        return $this->belongsTo(MataKuliah::class, 'kode_mata_kuliah', 'id');
     }
 }

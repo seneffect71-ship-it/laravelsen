@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
 use App\Models\Dosen;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -13,30 +14,35 @@ class AuthController extends Controller
         return view('auth.login', [
             'mahasiswa' => Mahasiswa::all(),
             'dosen' => Dosen::all(),
+            'users' => User::all(),
         ]);
     }
 
     public function login(Request $request)
     {
         $data = $request->validate([
-            'role' => 'required|in:mahasiswa,dosen',
+            'role' => 'required|in:mahasiswa,dosen,admin',
             'user_id' => 'required|integer'
         ]);
 
         if ($data['role'] === 'mahasiswa') {
             $user = Mahasiswa::find($data['user_id']);
-        } else {
+        } elseif ($data['role'] === 'dosen') {
             $user = Dosen::find($data['user_id']);
+        } else {
+            $user = User::find($data['user_id']);
         }
 
         if (! $user) {
             return redirect()->back()->withErrors(['user_id' => 'User tidak ditemukan'])->withInput();
         }
 
+        $displayName = $user->nama ?? ($user->Fullname ?? ($user->name ?? 'User'));
+
         session(['user' => [
             'id' => $user->id,
             'role' => $data['role'],
-            'name' => $user->nama ?? ($user->Fullname ?? 'User')
+            'name' => $displayName
         ]]);
 
         return redirect()->intended('/dashboard');

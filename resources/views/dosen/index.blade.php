@@ -22,10 +22,12 @@
                 <h1 class="h3 mb-1">Data Dosen</h1>
                 <p class="text-muted mb-0">Kelola identitas dosen, pendidikan terakhir, dan jurusan utama.</p>
             </div>
-            <div class="d-flex flex-wrap gap-2 align-items-start">
-                <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Dashboard</a>
-                <a href="{{ route('dosen.add') }}" class="btn btn-primary">Tambah Dosen</a>
-            </div>
+                        <div class="d-flex flex-wrap gap-2 align-items-start">
+                                <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Dashboard</a>
+                                @if(session('user.role') === 'admin')
+                                    <a href="{{ route('dosen.add') }}" class="btn btn-primary">Tambah Dosen</a>
+                                @endif
+                        </div>
         </div>
 
         @if(session('success'))
@@ -59,6 +61,7 @@
                         <td>{{ $d->Tempat_Lahir }}</td>
                         <td>{{ $d->Tanggal_Lahir }}</td>
                         <td class="text-end">
+                            @if(session('user.role') === 'admin')
                             <div class="d-inline-flex gap-2">
                                 <a href="{{ route('dosen.edit', $d->id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
                                 <form action="{{ route('dosen.delete', $d->id) }}" method="post" onsubmit="return confirm('Hapus data dosen ini?')">
@@ -67,6 +70,7 @@
                                     <button type="submit" class="btn btn-sm btn-outline-danger">Hapus</button>
                                 </form>
                             </div>
+                            @endif
                         </td>
                     </tr>
                 @empty
@@ -82,6 +86,7 @@
             </table>
         </div>
     </div>
+    <div class="mt-3">@if(isset($dosen) && method_exists($dosen, 'links')) {{ $dosen->links() }} @endif</div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
