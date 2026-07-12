@@ -7,13 +7,22 @@ use Illuminate\Http\Request;
 
 class JurusanController extends Controller
 {
+    private function requireAdmin()
+    {
+        $user = session('user');
+        if (!$user || $user['role'] !== 'admin') {
+            return redirect('/dashboard')->with('message', 'Akses tidak diizinkan.');
+        }
+        return null;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         return view('jurusan.index', [
-            'jurusan' => Jurusan::latest()->get()
+            'jurusan' => Jurusan::latest()->paginate(12)
         ]);
     }
 
@@ -22,6 +31,9 @@ class JurusanController extends Controller
      */
     public function create()
     {
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
         return view('jurusan.create', []);
     }
 
@@ -30,6 +42,9 @@ class JurusanController extends Controller
      */
     public function store(Request $request)
     {
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
         $data = $request->validate([
             'Kode_Jurusan' => 'required|unique:table_jurusan,Kode_Jurusan',
             'Nama_Jurusan' => 'required',
@@ -45,7 +60,11 @@ class JurusanController extends Controller
      */
     public function show($id)
     {
-        return Jurusan::find($id);
+        $jurusan = Jurusan::find($id);
+        if (!$jurusan) {
+            return redirect()->route('jurusan.index')->with('message', 'Jurusan tidak ditemukan.');
+        }
+        return view('jurusan.show', compact('jurusan'));
     }
 
     /**
@@ -53,6 +72,9 @@ class JurusanController extends Controller
      */
     public function edit($id)
     {
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
         return view('jurusan.edit', [
             'jurusan' => Jurusan::find($id)
         ]);
@@ -63,6 +85,9 @@ class JurusanController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
         $data = $request->validate([
             'Kode_Jurusan' => 'required|unique:table_jurusan,Kode_Jurusan,'.$id,
             'Nama_Jurusan' => 'required',
@@ -78,6 +103,9 @@ class JurusanController extends Controller
      */
     public function destroy($id)
     {
+        $redirect = $this->requireAdmin();
+        if ($redirect) return $redirect;
+
         Jurusan::find($id)->delete();
 
         return redirect()->action([JurusanController::class, 'index'])->with('success', 'Data jurusan berhasil dihapus.');

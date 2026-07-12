@@ -19,7 +19,7 @@ class Dosen extends Model
               'Alamat'
        ];
 
-       public function kelas() {
-              return $this->hasMany(Kelas::class, 'id', 'kode_dosen');
-       }
+    public function kelas() {
+        return $this->hasMany(Kelas::class, 'kode_dosen', 'id');
+    }
 }

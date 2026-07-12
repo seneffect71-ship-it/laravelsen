@@ -41,10 +41,10 @@
 
         <div class="col-12">
           <label class="form-label">Mahasiswa</label>
-          <select name="kode_mahasiswa" class="form-select" {{ $mahasiswa->isEmpty() ? 'disabled' : '' }} required>
+          <select name="mahasiswa_id" class="form-select" {{ $mahasiswa->isEmpty() ? 'disabled' : '' }} required>
             <option value="">Pilih Mahasiswa</option>
             @foreach($mahasiswa as $mhs)
-              <option value="{{ $mhs->id }}" {{ old('kode_mahasiswa') == $mhs->id ? 'selected' : '' }}>{{ $mhs->nama }}</option>
+              <option value="{{ $mhs->id }}" {{ old('mahasiswa_id') == $mhs->id ? 'selected' : '' }}>{{ $mhs->nama }}</option>
             @endforeach
           </select>
         </div>

@@ -19,6 +19,11 @@ class Krs extends Model
 
     public function mahasiswa()
     {
-        return $this->belongsTo(Mahasiswa::class, 'kode_mahasiswa');
+        return $this->belongsTo(Mahasiswa::class, 'kode_mahasiswa', 'id');
+    }
+
+    public function details()
+    {
+        return $this->hasMany(KrsDetail::class, 'kode_krs', 'id');
     }
 }

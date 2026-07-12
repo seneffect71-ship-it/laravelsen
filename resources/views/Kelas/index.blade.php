@@ -20,10 +20,12 @@
                 <h1 class="h3 mb-1">Data Kelas</h1>
                 <p class="text-muted mb-0">Kelola jadwal, dosen, mata kuliah, dan kapasitas kelas.</p>
             </div>
-            <div class="d-flex flex-wrap gap-2 align-items-start">
-                <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Dashboard</a>
-                <a href="{{ route('kelas.create') }}" class="btn btn-primary">Tambah Kelas</a>
-            </div>
+                        <div class="d-flex flex-wrap gap-2 align-items-start">
+                                <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Dashboard</a>
+                                @if(session('user.role') === 'admin')
+                                    <a href="{{ route('kelas.create') }}" class="btn btn-primary">Tambah Kelas</a>
+                                @endif
+                        </div>
         </div>
 
         @if(session('success'))
@@ -57,11 +59,24 @@
                         <td>{{ ucfirst($kls->semester) }}</td>
                         <td>{{ $kls->tahun_ajaran }}</td>
                         <td class="text-end">
-                            <form action="{{ route('kelas.delete', $kls->id) }}" method="POST" onsubmit="return confirm('Hapus kelas ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Hapus</button>
-                            </form>
+                            @if(session('user.role') === 'admin')
+                            <div class="d-inline-flex gap-2">
+                                <a href="{{ route('kelas.edit', $kls->id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <form action="{{ route('kelas.delete', $kls->id) }}" method="POST" onsubmit="return confirm('Hapus kelas ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Hapus</button>
+                                </form>
+                            </div>
+                            <div class="d-inline-flex gap-2">
+                                <a href="{{ route('kelas.edit', $kls->id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <form action="{{ route('kelas.delete', $kls->id) }}" method="POST" onsubmit="return confirm('Hapus kelas ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Hapus</button>
+                                </form>
+                            </div>
+                            @endif
                         </td>
                     </tr>
                 @empty
@@ -77,6 +92,7 @@
             </table>
         </div>
     </div>
+    <div class="mt-3">@if(isset($kelas) && method_exists($kelas, 'links')) {{ $kelas->links() }} @endif</div>
 </main>
 </body>
 </html>

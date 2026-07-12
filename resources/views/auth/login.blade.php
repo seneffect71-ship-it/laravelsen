@@ -57,6 +57,7 @@
                 <select name="role" id="roleSelect" class="form-select" required>
                   <option value="mahasiswa" {{ old('role')=='mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
                   <option value="dosen" {{ old('role')=='dosen' ? 'selected' : '' }}>Dosen</option>
+                  <option value="admin" {{ old('role')=='admin' ? 'selected' : '' }}>Admin</option>
                 </select>
               </div>
 
@@ -69,6 +70,9 @@
                   @endforeach
                   @foreach($dosen as $d)
                     <option data-role="dosen" value="{{ $d->id }}">[D] {{ $d->Fullname }} ({{ $d->NIP ?? '' }})</option>
+                  @endforeach
+                  @foreach($users as $u)
+                    <option data-role="admin" value="{{ $u->id }}">[A] {{ $u->name }} ({{ $u->email }})</option>
                   @endforeach
                 </select>
                 <div class="form-text">Tidak perlu password untuk demo; pilih user lalu tekan Login.</div>

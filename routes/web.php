@@ -68,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
                 ]);
 
             case 'mahasiswa':
-                $krsMahasiswa = Krs::where('mahasiswa_id', $user['id']);
+                $krsMahasiswa = Krs::where('kode_mahasiswa', $user['id']);
                 // dashboard.blade.php butuh stats yang konsisten (dosen/mahasiswa/matakuliah/jurusan/krs/kelas)
                 return view('dashboard', [
                     'stats' => [
@@ -80,7 +80,7 @@ Route::middleware(['auth'])->group(function () {
                         'kelas' => Kelas::count(),
                     ],
                     'recentKrs' => Krs::with('mahasiswa')
-                        ->where('mahasiswa_id', $user['id'])
+                        ->where('kode_mahasiswa', $user['id'])
                         ->latest()
                         ->take(5)
                         ->get(),
@@ -94,76 +94,69 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 
     // Routes for Admin, Dosen, and Mahasiswa (Read-only for Dosen & Mahasiswa)
-    Route::middleware(['role:admin,dosen,mahasiswa'])->group(function () {
-        Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
-        Route::get('/mahasiswa/{id}', [MahasiswaController::class, 'show'])->name('mahasiswa.show');
-
-        Route::get('/dosen', [DosenController::class, 'index'])->name('dosen.index');
-        Route::get('/dosen/{id}', [DosenController::class, 'show'])->name('dosen.show');
-
-        Route::get('/matakuliah', [MataKuliahController::class, 'index'])->name('matakuliah.index');
-        Route::get('/matakuliah/{id}', [MataKuliahController::class, 'show'])->name('matakuliah.show');
-        
-        Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index');
-        Route::get('/jurusan/{id}', [JurusanController::class, 'show'])->name('jurusan.show');
-        
-        Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index'); // Mahasiswa can see class list
-    });
-
-    // Routes for Admin Only (CRUD Operations)
-    Route::middleware(['role:admin'])->group(function () {
+    // Semua route digabung dalam satu group auth, role diatur di controller masing-masing
+    Route::middleware(['auth'])->group(function () {
         // Mahasiswa
+        Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
         Route::get('/mahasiswa-create', [MahasiswaController::class, 'create'])->name('mahasiswa.add');
         Route::post('/mahasiswa', [MahasiswaController::class, 'store'])->name('mahasiswa.save');
         Route::get('/mahasiswa-edit/{id}', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
         Route::put('/mahasiswa/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
         Route::delete('/mahasiswa/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.delete');
+        Route::get('/mahasiswa/{id}', [MahasiswaController::class, 'show'])->name('mahasiswa.show');
 
         // Dosen
+        Route::get('/dosen', [DosenController::class, 'index'])->name('dosen.index');
         Route::get('/dosen-create', [DosenController::class, 'create'])->name('dosen.add');
         Route::post('/dosen', [DosenController::class, 'store'])->name('dosen.save');
         Route::get('/dosen-edit/{id}', [DosenController::class, 'edit'])->name('dosen.edit');
         Route::put('/dosen/{id}', [DosenController::class, 'update'])->name('dosen.update');
         Route::delete('/dosen/{id}', [DosenController::class, 'destroy'])->name('dosen.delete');
+        Route::get('/dosen/{id}', [DosenController::class, 'show'])->name('dosen.show');
 
         // Mata Kuliah
+        Route::get('/matakuliah', [MataKuliahController::class, 'index'])->name('matakuliah.index');
         Route::get('/matakuliah-create', [MataKuliahController::class, 'create'])->name('matakuliah.add');
         Route::post('/matakuliah', [MataKuliahController::class, 'store'])->name('matakuliah.save');
         Route::get('/matakuliah-edit/{id}', [MataKuliahController::class, 'edit'])->name('matakuliah.edit');
         Route::put('/matakuliah/{id}', [MataKuliahController::class, 'update'])->name('matakuliah.update');
         Route::delete('/matakuliah/{id}', [MataKuliahController::class, 'destroy'])->name('matakuliah.delete');
+        Route::get('/matakuliah/{id}', [MataKuliahController::class, 'show'])->name('matakuliah.show');
         
         // Jurusan
+        Route::get('/jurusan', [JurusanController::class, 'index'])->name('jurusan.index');
         Route::get('/jurusan-create', [JurusanController::class, 'create'])->name('jurusan.add');
         Route::post('/jurusan', [JurusanController::class, 'store'])->name('jurusan.save');
         Route::get('/jurusan-edit/{id}', [JurusanController::class, 'edit'])->name('jurusan.edit');
         Route::put('/jurusan/{id}', [JurusanController::class, 'update'])->name('jurusan.update');
         Route::delete('/jurusan/{id}', [JurusanController::class, 'destroy'])->name('jurusan.delete');
+        Route::get('/jurusan/{id}', [JurusanController::class, 'show'])->name('jurusan.show');
 
         // Kelas
+        Route::get('/kelas', [KelasController::class, 'index'])->name('kelas.index');
         Route::get('/kelas-create', [KelasController::class, 'create'])->name('kelas.create');
         Route::post('/kelas', [KelasController::class, 'store'])->name('kelas.store');
+        Route::get('/kelas-edit/{id}', [KelasController::class, 'edit'])->name('kelas.edit');
+        Route::put('/kelas/{id}', [KelasController::class, 'update'])->name('kelas.update');
         Route::delete('/kelas/{id}', [KelasController::class, 'destroy'])->name('kelas.delete');
 
-        // User Management
+        // User Management (Admin only)
         Route::get('/admin/users', [AdminController::class, 'index'])->name('admin.users.index');
         Route::get('/admin/users/create', [AdminController::class, 'create'])->name('admin.users.create');
         Route::post('/admin/users', [AdminController::class, 'store'])->name('admin.users.store');
         Route::delete('/admin/users/{id}', [AdminController::class, 'destroy'])->name('admin.users.destroy');
     });
 
-    // Routes for Dosen Only (KRS Approval)
-    Route::middleware(['role:dosen,admin'])->group(function () {
+    // Routes for KRS Management (akses diatur di controller)
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/krs', [KrsController::class, 'index'])->name('krs.index');
+        Route::get('/krs/create', [KrsController::class, 'create'])->name('krs.create');
+        Route::post('/krs', [KrsController::class, 'store'])->name('krs.store');
         Route::get('/krs-approval', [KrsController::class, 'indexForDosen'])->name('krs.index.dosen'); 
+        Route::get('/krs/{id}', [KrsController::class, 'show'])->name('krs.show');
+        Route::delete('/krs/{id}', [KrsController::class, 'destroy'])->name('krs.delete');
         Route::post('/krs/{id}/status', [KrsController::class, 'updateStatus'])->name('krs.status');
         Route::post('/krs-detail/{id}/status', [KrsDetailController::class, 'updateStatus'])->name('krs_detail.status');
     });
 
-    // Routes for Mahasiswa and Admin (KRS Management)
-    Route::middleware(['role:mahasiswa,admin'])->group(function () {
-        Route::get('/krs', [KrsController::class, 'index'])->name('krs.index');
-        Route::get('/krs/create', [KrsController::class, 'create'])->name('krs.create');
-        Route::post('/krs', [KrsController::class, 'store'])->name('krs.store');
-        Route::get('/krs/{id}', [KrsController::class, 'show'])->name('krs.show');
-    });
 });
